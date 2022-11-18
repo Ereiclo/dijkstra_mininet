@@ -3,6 +3,7 @@ import sys
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.node import Node
+from mininet.link import TCLink,TCIntf
 from mininet.log import setLogLevel, info
 from mininet.cli import CLI
 from dijkstra import generate_torus2d,generator_fib,print_graph,dijkstra_graph,generate_torus1d
@@ -105,12 +106,15 @@ class NetworkTopo(Topo):
                 ip_u = f"10.0.{ip_counters}.0"
                 ip_v = f"10.0.{ip_counters}.1"
                 subnet = "/24"
+                peso = g[u][v]
+
+                # print(1000/peso,peso/50,str(peso*2) + 'ms',end=" ")
+
 
                 self.addLink(r_u,r_v,intfName1=ether_u,
                                     intfName2=ether_v,
                                     params1={'ip':ip_u + subnet},
-                                    params2={'ip':ip_v + subnet})
-                
+                                    params2={'ip':ip_v + subnet},cls=TCLink,bw=1000/peso,loss=peso/50,delay= str(peso*2) + 'ms')#delay='500ms')
                 if ether_counters[u] == 0:
                     ip[u] = ip_u
                 
