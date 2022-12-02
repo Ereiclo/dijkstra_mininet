@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import math
 import sys
 from mininet.topo import Topo
 from mininet.net import Mininet
@@ -13,7 +14,7 @@ from dijkstra import generate_torus2d,generator_fib,print_graph,dijkstra_graph,g
 
 g = None #Grafo de la topologia
 
-ip_links = None #Diccionario donde ip_links[u][v] guarda la tupla (ip_u,ether_u,ip_v,ether_v) 
+ip_links = None #Diccionario donde ip_links[u][v] guarda la 4-tupla (ip_u,ether_u,ip_v,ether_v) 
                 #para la conexion directa entre u y v 
 ip = None #Arreglo que asocia ip[i] la ip para el i-esimo router
 
@@ -53,12 +54,12 @@ def make_route(net,route,u,v):
 
 
 def create_routing_table(net,u,v):
-    route,_ = dijkstra_graph(u,v,g)
+    route,dist = dijkstra_graph(u,v,g)
 
 
     #imprimir la ruta de u a v en consola
     print(f"u: {u}, v: {v}")
-    print(route)
+    print(route, f"distancia: {dist}" )
 
     print(f"[{ip_links[route[0]][route[1]][0]}, ",end="")
     for i in range(1,len(route)-1):
@@ -76,7 +77,7 @@ def create_routing_table(net,u,v):
  
 
 
-
+#extraído de https://github.com/mininet/mininet/blob/master/examples/linuxrouter.py
 class LinuxRouter(Node):
     def config(self, **params):
         super(LinuxRouter, self).config(**params)
@@ -122,16 +123,15 @@ class NetworkTopo(Topo):
                 subnet = "/24"#mascara
                 peso = g[u][v]#peso de la arista
 
-                # print(1000/peso,peso/50,str(peso*2) + 'ms',end=" ")
 
 
                 #crear el link con un bandwidth de 1000/peso y delay peso*2 ms
                 #hacer que los links con aristas de mayor peso tengan menos troughtput
+                print(f"(bw:{math.ceil(1000/peso)},delay:{peso*2}) ",end="")
                 self.addLink(r_u,r_v,intfName1=ether_u,
                                     intfName2=ether_v,
                                     params1={'ip':ip_u + subnet},
-                                    # params2={'ip':ip_v + subnet},cls=TCLink,bw=1000/peso,loss=peso/50,delay= str(peso*2) + 'ms')#delay='500ms')
-                                    params2={'ip':ip_v + subnet},cls=TCLink,bw=1000/peso,loss=0,delay= str(peso*2) + 'ms')#delay='500ms')
+                                    params2={'ip':ip_v + subnet},cls=TCLink,bw=1000/peso,loss=0,delay= str(peso*2) + 'ms')
 
                 #si es la primera vez que creamos una interfaz para u
                 #guardar la ip de esa interfaz como la ip del router u
