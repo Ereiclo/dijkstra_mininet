@@ -158,6 +158,9 @@ class NetworkTopo(Topo):
 def run():
     topo = NetworkTopo()
     net = Mininet(topo=topo)#crear una instancia de mininet con la topologia NetworkTopo
+
+
+    print("\nLos caminos optimos son:")
     
     for u in range(len(g)): #por cada par u v buscar el camino óptimo
         for v in range(len(g[0])):

@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
     print("TORUS 1D:")
     g1 = generate_torus1d(9, fib1)
-    #g1 = generate_torus1d(9, ran1)
+    # g1 = generate_torus2d(9, ran1)
     print_graph(g1)
     print("TORUS 2D:")
     g2 = generate_torus2d(3, fib2)
