@@ -32,7 +32,7 @@ def new_route(ip,gw,intf):
 def make_route(net,route,u,v):
 
 
-    _,_,ip_v,_ = ip_links[route[-2]][route[-1]] #conseguir la ip de v para la última conexion del camino
+    _,_,ip_v,_ = ip_links[route[-2]][route[-1]] #conseguir la ip de v para la ltima conexion del camino
 
 
     for i in range(0,len(route)-1): #recorrer todo el camino route
