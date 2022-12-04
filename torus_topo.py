@@ -118,8 +118,8 @@ class NetworkTopo(Topo):
                                                             #de u en la conexion
                 ether_v = f"r{v}-eth{ether_counters[v]}"#nombre que se asociara para interfaz
                                                             #de v en la conexion
-                ip_u = f"10.0.{ip_counters}.0"          #subnet creada para la conexion u<->v
-                ip_v = f"10.0.{ip_counters}.1"
+                ip_u = f"10.0.{ip_counters}.2"          #subnet creada para la conexion u<->v
+                ip_v = f"10.0.{ip_counters}.3"
                 subnet = "/24"#mascara
                 peso = g[u][v]#peso de la arista
 
